@@ -69,9 +69,9 @@ Se entrenó la red con:
 
 ## 📌 Ejemplo de salida
 
-Coordenada (0.2581, 0.3214) → Predicho: purple | Real: purple
-Coordenada (0.6129, 0.6786) → Predicho: orange | Real: orange
-Coordenada (0.7742, 0.8214) → Predicho: green | Real: green
+- Coordenada (0.2581, 0.3214) → Predicho: purple | Real: purple
+- Coordenada (0.6129, 0.6786) → Predicho: orange | Real: orange
+- Coordenada (0.7742, 0.8214) → Predicho: green | Real: green
 
 
 ---

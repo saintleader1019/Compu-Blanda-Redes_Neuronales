@@ -44,7 +44,7 @@ def backward(X, Y, Z1, A1, A2, W2):
     return dW1, db1, dW2, db2
 
 # --- Entrenamiento ---
-def train(X, Y, input_size=2, hidden_size=20, output_size=3, lr=0.1, epochs=1000):
+def train(X, Y, input_size=2, hidden_size=4, output_size=3, lr=0.75, epochs=10000):
     W1, b1, W2, b2 = init_params(input_size, hidden_size, output_size)
     losses = []
     for epoch in range(epochs):

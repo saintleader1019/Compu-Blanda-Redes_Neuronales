@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+np.random.seed(42)  # Para reproducibilidad
+
 # --- Funciones de activación ---
 def relu(z):
     return np.maximum(0, z)
@@ -34,17 +36,22 @@ def forward(X, W1, b1, W2, b2):
 # --- Backward ---
 def backward(X, Y, Z1, A1, A2, W2):
     m = X.shape[0]
-    dZ2 = A2 - Y
-    dW2 = (dZ2.T @ A1) / m
-    db2 = np.mean(dZ2, axis=0, keepdims=True)
-    dA1 = dZ2 @ W2
-    dZ1 = dA1 * relu_derivative(Z1)
-    dW1 = (dZ1.T @ X) / m
-    db1 = np.mean(dZ1, axis=0, keepdims=True)
+
+    # Salida (softmax + cross-entropy)
+    dZ2 = A2 - Y                                 # [m x 3]
+    dW2 = (dZ2.T @ A1) / m                       # [3 x 4]
+    db2 = np.sum(dZ2, axis=0, keepdims=True) / m  # [1 x 3]
+
+    # Propagación hacia capa oculta
+    dA1 = dZ2 @ W2                               # [m x 4]
+    dZ1 = dA1 * relu_derivative(Z1)             # [m x 4]
+    dW1 = (dZ1.T @ X) / m                        # [4 x 2]
+    db1 = np.sum(dZ1, axis=0, keepdims=True) / m  # [1 x 4]
+
     return dW1, db1, dW2, db2
 
 # --- Entrenamiento ---
-def train(X, Y, input_size=2, hidden_size=4, output_size=3, lr=0.75, epochs=10000):
+def train(X, Y, input_size=2, hidden_size=4, output_size=3, lr=0.5, epochs=10000):
     W1, b1, W2, b2 = init_params(input_size, hidden_size, output_size)
     losses = []
     for epoch in range(epochs):

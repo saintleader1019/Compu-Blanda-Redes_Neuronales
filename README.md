@@ -89,6 +89,50 @@ Este proyecto demuestra cómo una red neuronal simple puede aprender a clasifica
 
 ---
 
-## 👨‍💻 Autor
+
+## 🧠 Reconocimiento de Dígitos Manuscritos (MNIST)
+
+### 🎯 Objetivo
+
+Implementar una red neuronal para reconocer imágenes de dígitos (0–9) escritos a mano, usando el dataset `train.csv` de [Kaggle - Digit Recognizer](https://www.kaggle.com/competitions/digit-recognizer).
+
+### ⚙️ Arquitectura
+
+- **Entradas**: 784 valores (28×28 píxeles aplanados)
+- **Capa oculta**: 20 neuronas (ReLU)
+- **Capa de salida**: 10 neuronas (Softmax)
+- **Inicialización**: pesos ∈ [-0.5, 0.5], bias = 0
+- **Pérdida**: Entropía cruzada multiclase
+- **Entrenamiento**: Descenso por gradiente
+
+### 🧪 Evaluación
+
+- Se entrenó con 10.000 ejemplos para mayor rapidez
+- Precisión sobre los datos de entrenamiento superó el 90%
+- Se graficaron 10 ejemplos con predicción vs etiqueta real
+- Se guardaron los pesos entrenados para no reentrenar cada vez
+
+### 🗂️ Archivos útiles
+
+- `modelo_entrenado.npz`: contiene los pesos y sesgos (`W1`, `b1`, `W2`, `b2`)
+- `grafica_perdida.png`: curva de error durante el entrenamiento
+- `imagen_prediccion_X.png`: predicción visual para algunas muestras
+
+---
+
+## ✅ Reutilización del modelo
+
+El modelo se guarda automáticamente luego del entrenamiento, y puede reutilizarse así:
+
+```python
+data = np.load("modelo_entrenado.npz")
+W1, b1, W2, b2 = data["W1"], data["b1"], data["W2"], data["b2"]
+
+
+
+## 📌 Ejemplo de salida
+
+
+### 👨‍💻 Autor
 
 - **Santiago Herrera Muñoz**

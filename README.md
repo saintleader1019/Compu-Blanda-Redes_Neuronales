@@ -112,6 +112,13 @@ Implementar una red neuronal para reconocer imágenes de dígitos (0–9) escrit
 - Se graficaron 10 ejemplos con predicción vs etiqueta real
 - Se guardaron los pesos entrenados para no reentrenar cada vez
 
+### 📉 Gráfica de pérdida
+
+A continuación se muestra cómo evolucionó la función de error a lo largo del entrenamiento:
+
+![Gráfica de pérdida](grafica_perdida.png)
+
+
 ### 🗂️ Archivos útiles
 
 - `modelo_entrenado.npz`: contiene los pesos y sesgos (`W1`, `b1`, `W2`, `b2`)
@@ -127,7 +134,7 @@ El modelo se guarda automáticamente luego del entrenamiento, y puede reutilizar
 ```python
 data = np.load("modelo_entrenado.npz")
 W1, b1, W2, b2 = data["W1"], data["b1"], data["W2"], data["b2"]
-
+```
 
 
 ## 📌 Ejemplo de salida

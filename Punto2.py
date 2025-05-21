@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+np.random.seed(0)
+
 # Activaciones
 def relu(z):
     return np.maximum(0, z)
@@ -45,11 +47,13 @@ def backward(X, Y, Z1, A1, A2, W2):
     return dW1, db1, dW2, db2
 
 # Entrenamiento
-def train(X, Y, input_size=784, hidden_size=20, output_size=10, lr=0.1, epochs=1000):
+def train(X, Y, input_size=784, hidden_size=20, output_size=10, lr=0.5, epochs=1000):
     W1, b1, W2, b2 = init_params(input_size, hidden_size, output_size)
+    losses = []
     for epoch in range(epochs):
         Z1, A1, Z2, A2 = forward(X, W1, b1, W2, b2)
         loss = np.mean(cross_entropy(Y, A2))
+        losses.append(loss)
         if epoch % 100 == 0:
             print(f"Epoch {epoch}, Loss: {loss:.4f}")
         dW1, db1, dW2, db2 = backward(X, Y, Z1, A1, A2, W2)
@@ -57,7 +61,7 @@ def train(X, Y, input_size=784, hidden_size=20, output_size=10, lr=0.1, epochs=1
         b1 -= lr * db1
         W2 -= lr * dW2
         b2 -= lr * db2
-    return W1, b1, W2, b2
+    return W1, b1, W2, b2, losses
 
 # Predicción
 def predict(X, W1, b1, W2, b2):
@@ -71,22 +75,61 @@ def one_hot_encode(y, num_classes=10):
     return one_hot
 
 # === Main: Cargar datos y entrenar ===
-# Leer train.csv (asegúrate de tenerlo en el mismo directorio)
-train_df = pd.read_csv("test.csv")  # <- cambia a ruta absoluta si hace falta
+# Leer train.csv
+train_df = pd.read_csv("train.csv")
 
 X = train_df.drop(columns=["label"]).values / 255.0
 y = train_df["label"].values
 Y = one_hot_encode(y)
 
 # Usamos los primeros 10000 datos como muestra de entrenamiento
-X_sample = X[:10000]
-Y_sample = Y[:10000]
-y_sample = y[:10000]
+X_sample = X[:5000]
+Y_sample = Y[:5000]
+y_sample = y[:5000]
 
-# Entrenar red neuronal
-W1, b1, W2, b2 = train(X_sample, Y_sample, epochs=1000)
+import os
+
+if os.path.exists("modelo_entrenado.npz"):
+    # Cargar pesos entrenados
+    data = np.load("modelo_entrenado.npz")
+    W1 = data["W1"]
+    b1 = data["b1"]
+    W2 = data["W2"]
+    b2 = data["b2"]
+    print("Modelo cargado desde archivo ✅")
+else:
+    # Entrenar y guardar
+    W1, b1, W2, b2, losses = train(X_sample, Y_sample, epochs=10000)
+    np.savez("modelo_entrenado.npz", W1=W1, b1=b1, W2=W2, b2=b2)
+    print("Modelo entrenado y guardado ✅")
+
 
 # Evaluar modelo
 preds = predict(X_sample, W1, b1, W2, b2)
 accuracy = np.mean(preds == y_sample)
 print(f"\nPrecisión en conjunto de entrenamiento: {accuracy * 100:.2f}%")
+
+# === Gráfico de pérdida ===
+import matplotlib.pyplot as plt
+
+plt.plot(losses)
+plt.title("Evolución del error durante el entrenamiento")
+plt.xlabel("Épocas")
+plt.ylabel("Pérdida")
+plt.grid()
+plt.show()
+
+# === Visualizar algunas predicciones ===
+print("\nMuestras visuales de predicción:")
+for i in range(10):
+    img = X_sample[i].reshape(28, 28)
+    plt.imshow(img, cmap='gray')
+    plt.title(f"Etiqueta real: {y_sample[i]} — Predicción: {preds[i]}")
+    plt.axis('off')
+    plt.show()
+
+# === Verificar si acertó o no (texto) ===
+print("\nVerificación de predicciones:")
+for i in range(10):
+    correcto = "✅" if preds[i] == y_sample[i] else "❌"
+    print(f"{correcto} Imagen {i}: real = {y_sample[i]}, predicción = {preds[i]}")

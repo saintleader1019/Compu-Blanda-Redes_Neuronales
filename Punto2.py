@@ -47,7 +47,7 @@ def backward(X, Y, Z1, A1, A2, W2):
     return dW1, db1, dW2, db2
 
 # Entrenamiento
-def train(X, Y, input_size=784, hidden_size=20, output_size=10, lr=0.5, epochs=1000):
+def train(X, Y, input_size=784, hidden_size=20, output_size=10, lr=0.1, epochs=10000):
     W1, b1, W2, b2 = init_params(input_size, hidden_size, output_size)
     losses = []
     for epoch in range(epochs):
@@ -96,11 +96,12 @@ if os.path.exists("modelo_entrenado.npz"):
     b1 = data["b1"]
     W2 = data["W2"]
     b2 = data["b2"]
+    losses = data["losses"]
     print("Modelo cargado desde archivo ✅")
 else:
     # Entrenar y guardar
     W1, b1, W2, b2, losses = train(X_sample, Y_sample, epochs=10000)
-    np.savez("modelo_entrenado.npz", W1=W1, b1=b1, W2=W2, b2=b2)
+    np.savez("modelo_entrenado.npz", W1=W1, b1=b1, W2=W2, b2=b2, losses=losses)
     print("Modelo entrenado y guardado ✅")
 
 
@@ -117,16 +118,18 @@ plt.title("Evolución del error durante el entrenamiento")
 plt.xlabel("Épocas")
 plt.ylabel("Pérdida")
 plt.grid()
+plt.savefig("grafica_perdida.png")
 plt.show()
 
 # === Visualizar algunas predicciones ===
-print("\nMuestras visuales de predicción:")
 for i in range(10):
     img = X_sample[i].reshape(28, 28)
     plt.imshow(img, cmap='gray')
     plt.title(f"Etiqueta real: {y_sample[i]} — Predicción: {preds[i]}")
     plt.axis('off')
+    plt.savefig(f"imagen_prediccion_{i}.png")
     plt.show()
+
 
 # === Verificar si acertó o no (texto) ===
 print("\nVerificación de predicciones:")

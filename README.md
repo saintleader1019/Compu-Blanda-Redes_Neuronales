@@ -139,6 +139,20 @@ W1, b1, W2, b2 = data["W1"], data["b1"], data["W2"], data["b2"]
 
 ## 📌 Ejemplo de salida
 
+Predicciones de la red sobre 10 ejemplos del conjunto de entrenamiento:
+
+![Ejemplo 0](imagen_prediccion_0.png)
+![Ejemplo 1](imagen_prediccion_1.png)
+![Ejemplo 2](imagen_prediccion_2.png)
+![Ejemplo 3](imagen_prediccion_3.png)
+![Ejemplo 4](imagen_prediccion_4.png)
+![Ejemplo 5](imagen_prediccion_5.png)
+![Ejemplo 6](imagen_prediccion_6.png)
+![Ejemplo 7](imagen_prediccion_7.png)
+![Ejemplo 8](imagen_prediccion_8.png)
+![Ejemplo 9](imagen_prediccion_9.png)
+
+---
 
 ### 👨‍💻 Autor
 

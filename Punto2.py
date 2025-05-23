@@ -136,11 +136,20 @@ if os.path.exists("test.csv"):
     X_test = test_df.values / 255.0
     preds_test = predict(X_test, W1, b1, W2, b2)
 
+    for i in range(10):
+        img = X_test[i].reshape(28, 28)
+        plt.imshow(img, cmap='gray')
+        plt.title(f"Predicción: {preds_test[i]}")
+        plt.axis('off')
+        plt.savefig(f"imagen_prediccion_test_{i}.png")
+        plt.show()
+        
     submission = pd.DataFrame({
         "ImageId": np.arange(1, len(preds_test) + 1),
         "Label": preds_test
     })
     submission.to_csv("submission.csv", index=False)
     print("\nArchivo submission.csv generado con predicciones sobre test.csv ✅")
+
 else:
     print("\n⚠️ test.csv no fue encontrado. Asegúrate de colocarlo en el mismo directorio.")
